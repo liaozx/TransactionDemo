@@ -1,4 +1,4 @@
-package com.example;
+package com.example.lock;
 
 public interface MyLock{
 	Lock getWriteLock();

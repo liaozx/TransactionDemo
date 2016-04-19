@@ -1,4 +1,4 @@
-package com.example;
+package com.example.lock;
 
 public class LockWriter implements Runnable {
 

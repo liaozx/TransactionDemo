@@ -1,4 +1,4 @@
-package com.example;
+package com.example.lock;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
