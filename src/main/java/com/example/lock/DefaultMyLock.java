@@ -20,9 +20,15 @@ public class DefaultMyLock implements MyLock {
 		writeLock = new Lock() {
 
 			@Override
-			public void lock() {
+			public void lock() throws InterruptedException {
+				int n = 0;
 				for (;;) {
 					if (readLockVal.get() != 0) {
+						n++;
+						if (n > 10) {
+							wait();
+							n = 0;
+						}
 						continue;
 					}
 					int write = writeLockVal.get();
@@ -37,15 +43,16 @@ public class DefaultMyLock implements MyLock {
 			@Override
 			public void unLock() {
 				writeLockVal.set(0);
-//				for (;;) {
-//					int write = writeLockVal.get();
-//					if (write == 1) {
-//						if (writeLockVal.compareAndSet(1, 0))
-//							return;
-//					}
-//				}
-//				
-//				
+				notifyAll();
+				// for (;;) {
+				// int write = writeLockVal.get();
+				// if (write == 1) {
+				// if (writeLockVal.compareAndSet(1, 0))
+				// return;
+				// }
+				// }
+				//
+				//
 			}
 
 		};
@@ -53,9 +60,14 @@ public class DefaultMyLock implements MyLock {
 		readLock = new Lock() {
 
 			@Override
-			public void lock() {
+			public void lock() throws InterruptedException {
+				int n = 0;
 				for (;;) {
 					if (writeLockVal.get() == 1) {
+						if (n > 10) {
+							wait();
+							n = 0;
+						}
 						continue;
 					}
 					int old = readLockVal.get();
