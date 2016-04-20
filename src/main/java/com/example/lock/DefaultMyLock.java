@@ -26,7 +26,7 @@ public class DefaultMyLock implements MyLock {
 					if (readLockVal.get() != 0) {
 						n++;
 						if (n > 10) {
-							wait();
+							Thread.yield();
 							n = 0;
 						}
 						continue;
@@ -43,7 +43,6 @@ public class DefaultMyLock implements MyLock {
 			@Override
 			public void unLock() {
 				writeLockVal.set(0);
-				notifyAll();
 				// for (;;) {
 				// int write = writeLockVal.get();
 				// if (write == 1) {
@@ -65,7 +64,7 @@ public class DefaultMyLock implements MyLock {
 				for (;;) {
 					if (writeLockVal.get() == 1) {
 						if (n > 10) {
-							wait();
+							Thread.yield();
 							n = 0;
 						}
 						continue;
