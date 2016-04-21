@@ -14,7 +14,7 @@ public class Zktest {
 	public static void main(String[] args) {
 
 		try {
-			ZooKeeper zk = new ZooKeeper("localhost:2181", 3000, new Watcher() {
+			ZooKeeper zk = new ZooKeeper("localhost:2181,localhost:2182,localhost:2183", 3000, new Watcher() {
 
 				@Override
 				public void process(WatchedEvent event) {
@@ -23,7 +23,7 @@ public class Zktest {
 				}
 
 			});
-			zk.create("/providers/s1", "hello".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+			zk.create("/dubbo/providers/s1", "hello".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
 			Thread.sleep(10000);
 			zk.close();
 			System.out.println("over!");
